@@ -1,2 +1,5 @@
 fastapi
 uvicorn[standard]
+sentence-transformers
+numpy
+groq
