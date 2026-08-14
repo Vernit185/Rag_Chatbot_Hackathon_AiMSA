@@ -1,10 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 
 app = FastAPI(title="Energy Intelligence API")
 
-# Temporary CORS configuration for testing.
-# We will restrict this to the Vercel domain later.
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -12,6 +11,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+class AskRequest(BaseModel):
+    question: str
 
 
 @app.get("/")
@@ -29,10 +32,9 @@ def health():
 
 
 @app.post("/ask")
-def ask(data: dict):
-    question = data.get("question", "")
+def ask(request: AskRequest):
 
     return {
         "status": "success",
-        "answer": f"Backend received: {question}"
+        "answer": f"Backend received: {request.question}"
     }
